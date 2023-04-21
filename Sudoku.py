@@ -1,5 +1,8 @@
-class Solution:
-    def isValidSudoku(self, board: List[List[str]]) -> bool:
+from collections import Counter
+
+class Sudoku:
+    # Checks if all the digits are appearing exactly one in a particular row.
+    def isValidSudoku(self, board):
         for i in board:
             counted = Counter(i)
             for i in counted:
@@ -7,6 +10,7 @@ class Solution:
                     if counted[i] > 1:
                         return False
         
+        # Checks if all the digits are appearing exactly one in a particular column.
         for c in range(9):
             counted = {}
             for r in range(9):
@@ -15,6 +19,7 @@ class Solution:
                 else:
                     counted[board[r][c]] = 1
         
+        # Checks if all the digits are appearing exactly one in a particular inner 3*3 matrix.
         for r in range(0,9,3):
             for c in range(0,9,3):
                 mat = [
@@ -29,3 +34,17 @@ class Solution:
                             return False
 
         return True
+    
+if __name__=="__main__":
+    S = Sudoku()
+    board = [["5","3",".",".","7",".",".",".","."]
+,["6",".",".","1","9","5",".",".","."]
+,[".","9","8",".",".",".",".","6","."]
+,["8",".",".",".","6",".",".",".","3"]
+,["4",".",".","8",".","3",".",".","1"]
+,["7",".",".",".","2",".",".",".","6"]
+,[".","6",".",".",".",".","2","8","."]
+,[".",".",".","4","1","9",".",".","5"]
+,[".",".",".",".","8",".",".","7","9"]]
+
+    print(S.isValidSudoku(board))
