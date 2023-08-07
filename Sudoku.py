@@ -49,26 +49,78 @@ class Sudoku:
             return False
     
     sol = []
-    def fillSudoku(self, board, pVal = 0):
+    # def fillSudoku(self, board, pVal = 0):
+        # for i in range(9):
+        #     for j in range(9):
+                # if board[i][j] == ".":
+        #             for val in range(pVal+1,10):
+                        
+        #                 if self.checkValid(i,j,val):
+        #                     self.sol.append((i,j))
+        #                     board[i][j] = val
+        #                     break
+        #             pVal = 0
+
+        #             if board[i][j] == ".": 
+        #                 print(self.sol,i,j)     
+        #                 lastSol = self.sol.pop()
+        #                 lastVal = board[lastSol[0]][lastSol[1]]
+        #                 board[lastSol[0]][lastSol[1]] = "."
+        #                 board = self.fillSudoku(board, lastVal)
+
+        # return board
+
+    def traverseBoard(self, board):
+        # r1,r2,r3,r4,r5,r6,r7,r8,r9={},{},{},{},{},{},{},{},{}
+        # c1,c2,c3,c4,c5,c6,c7,c8,c9={},{},{},{},{},{},{},{},{}
+        solSet = {}
         for i in range(9):
             for j in range(9):
-                if board[i][j] == ".":
-                    for val in range(pVal+1,10):
-                        
+                if board [i][j] == ".":
+                    for val in range(1,10):
                         if self.checkValid(i,j,val):
-                            self.sol.append((i,j))
-                            board[i][j] = val
-                            break
-                    pVal = 0
+                            if (i,j) in solSet.keys():
+                                solSet[(i,j)].add(val)
+                            else:
+                                solSet[(i,j)] = {val}
+                    
+    
+    def checkunique(self, dict, index):
+        row = index[0]
+        col = index[1]
 
-                    if board[i][j] == ".": 
-                        print(self.sol,i,j)     
-                        lastSol = self.sol.pop()
-                        lastVal = board[lastSol[0]][lastSol[1]]
-                        board[lastSol[0]][lastSol[1]] = "."
-                        board = self.fillSudoku(board, lastVal)
+        for Val in dict[index]:
+            #checks for uniqueness in row.
+            rowValues = []
+            for i in list(dict.keys()):
+                if i[0] == row:
+                    rowValues += list(dict[i])
+            rowValues.remove(Val)
+            if Val not in rowValues:
+                return True
+            
+            #checks for uniqueness in Column.
+            colValues = []
+            for i in list(dict.keys()):
+                if i[1] == col:
+                    colValues += list(dict[i])
+            colValues.remove(Val)
+            if Val not in colValues:
+                return True
+            
+            mR, mC = (row//3)*3, (col//3)*3
+            matValues = []
+            for i in list(dict.keys()):
+                if i[0] in range(mR, mR + 3):
+                    if[1] in range(mC, mC + 3):
+                        matValues += list(dict[i])
+            matValues.remove(Val)
+            if Val not in matValues:
+                return True
 
-        return board
+        
+        
+        return False
     
 if __name__=="__main__":
     S = Sudoku()
