@@ -48,7 +48,7 @@ class Sudoku:
                 return True
             return False
     
-    sol = []
+    # sol = []
     # def fillSudoku(self, board, pVal = 0):
         # for i in range(9):
         #     for j in range(9):
@@ -80,47 +80,69 @@ class Sudoku:
                     for val in range(1,10):
                         if self.checkValid(i,j,val):
                             if (i,j) in solSet.keys():
-                                solSet[(i,j)].add(val)
+                                solSet[(i,j)].append(val)
                             else:
-                                solSet[(i,j)] = {val}
+                                solSet[(i,j)] = [val]
+        return solSet
                     
     
     def checkunique(self, dict, index):
         row = index[0]
         col = index[1]
-
+        # print(dict)
         for Val in dict[index]:
+
             #checks for uniqueness in row.
             rowValues = []
             for i in list(dict.keys()):
                 if i[0] == row:
-                    rowValues += list(dict[i])
+                    rowValues += dict[i]
             rowValues.remove(Val)
             if Val not in rowValues:
-                return True
+                return Val
             
             #checks for uniqueness in Column.
             colValues = []
             for i in list(dict.keys()):
                 if i[1] == col:
-                    colValues += list(dict[i])
+                    colValues += dict[i]
             colValues.remove(Val)
             if Val not in colValues:
-                return True
+                return Val
             
+            #checks for uniqueness in Matrix.
             mR, mC = (row//3)*3, (col//3)*3
             matValues = []
             for i in list(dict.keys()):
                 if i[0] in range(mR, mR + 3):
                     if[1] in range(mC, mC + 3):
-                        matValues += list(dict[i])
+                        matValues += dict[i]
+            # print(mR,mC,matValues,Val)
             matValues.remove(Val)
             if Val not in matValues:
-                return True
+                return Val
 
+        return 0
+    
+    def fillBoard(self,board):
+        solSet = self.traverseBoard(board)
         
-        
-        return False
+        while(len(solSet) >= 1):
+
+            for key in solSet:
+                if len(solSet[key]) == 1:
+                    board[key[0]][key[1]] = solSet[key][0]
+                    del board[key]
+                    continue
+
+                value = self.checkunique(solSet, key)
+                if value != 0:
+                    board[key[0]][key[1]] = value
+                    del board[key]
+                    continue
+
+            solSet = self.traverseBoard(board)
+        return board
     
 if __name__=="__main__":
     S = Sudoku()
@@ -136,5 +158,6 @@ if __name__=="__main__":
     
 # [['5', '3', 1, 2, '7', 3, 4, 5, 6], ['6', 2, 3, '1', '9', '5', 1, 7, 8], [4, '9', '8', 1, 5, 6, 2, '6', 3], ['8', 1, 2, 3, '6', 4, 5, 6, '3'], ['4', 3, 4, '8', 1, '3', 7, 2, '1'], ['7', 5, 6, 7, '2', 2, 3, 1, '6'], [1, '6', 5, 4, 2, 8, '2', '8', 7], [2, 4, 8, '4', '1', '9', 6, 3, '5'], [3, 6, 7, 5, '8', 1, 8, '7', '9']]
 
-print(S.fillSudoku(board))
+    print(S.traverseBoard(board))
+    print(S.fillBoard(board))
 
