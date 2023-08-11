@@ -2,6 +2,31 @@ from collections import Counter
 
 class Sudoku:
 
+    # Takes input from the user row by row
+    def userInput(self):
+        board = []
+        for i in range(9):
+            row = list(map(int, input("Enter data for row, seperated by spaces and 0 indicates blank space: ").split()))
+            board.append(row)
+
+        return board
+    
+    # Prints board matrix-wise.
+    def printStructure(self, board):
+
+        for i in range(9):
+            if i == 3 or i == 6:
+                print("---------------------")
+            string = ""
+            for j in range(9):
+                if j == 3 or j == 6:
+                    string += "| "
+                cellValue = str(board[i][j]) if board[i][j] != 0 else " "
+                string += (cellValue + " ")
+            print(string)
+
+    
+
     #checks if the given value is allowable the position given.
     def checkValid(self,row,col,val):
             if val not in board[row]:                           #check for possiblity in row
@@ -21,7 +46,7 @@ class Sudoku:
         solSet = {}
         for i in range(9):
             for j in range(9):
-                if board [i][j] == ".":
+                if board [i][j] == 0:
                     for val in range(1,10):
                         if self.checkValid(i,j,val):
                             if (i,j) in solSet.keys():
@@ -94,7 +119,7 @@ class Sudoku:
         for i in board:
             counted = Counter(i)
             for i in counted:
-                if i != ".":
+                if i != 0:
                     if counted[i] > 1:
                         return False
         
@@ -102,7 +127,7 @@ class Sudoku:
         for c in range(9):
             counted = {}
             for r in range(9):
-                if board[r][c] in counted and board[r][c] !=".":
+                if board[r][c] in counted and board[r][c] !=0:
                     return False
                 else:
                     counted[board[r][c]] = 1
@@ -117,7 +142,7 @@ class Sudoku:
                 ]
                 counted = Counter(mat)
                 for i in counted:
-                    if i != ".":
+                    if i != 0:
                         if counted[i] > 1:
                             return False
 
@@ -125,18 +150,23 @@ class Sudoku:
     
 if __name__=="__main__":
     S = Sudoku()
-    board = [
-    [".", 8, 5,".", 7, ".", 2, 6,"."],
-    [1, ".", ".", 6, ".", 4, ".", ".", 7],
-    [3, ".", ".", ".", ".", ".", ".", ".", 4],
-    [".", 4, ".", 3, 5, 2, ".", 9, "."],
-    [5, ".", ".", 9, ".", 7, ".",".",2],
-    [".", 3, ".", 8, 1, 6, ".", 4,"."],
-    [7, ".", ".", ".", ".", ".", ".", ".", 6],
-    [9, ".", ".", 5, ".", 8, ".", ".", 1],
-    [".", 6, 3, ".", 2, ".", 4, 5, "."]]
-    
-    print("The given board is: ",S.isValidSudoku(board))
+    # board = [
+    # [0, 8, 5, 0, 7, 0, 2, 6, 0],
+    # [1, 0, 0, 6, 0, 4, 0, 0, 7],
+    # [3, 0, 0, 0, 0, 0, 0, 0, 4],
+    # [0, 4, 0, 3, 5, 2, 0, 9, 0],
+    # [5, 0, 0, 9, 0, 7, 0, 0, 2],
+    # [0, 3, 0, 8, 1, 6, 0, 4, 0],
+    # [7, 0, 0, 0, 0, 0, 0, 0, 6],
+    # [9, 0, 0, 5, 0, 8, 0, 0, 1],
+    # [0, 6, 3, 0, 2, 0, 4, 5, 0]]
+
+    board = S.userInput()
+    print("\nThe board provided by you is: \n")
+    S.printStructure(board)
+    print("\nThe given board is: ",S.isValidSudoku(board))
     ans = S.fillBoard(board)
-    print(ans)
-    print("The provided solution is: ",S.isValidSudoku(ans))
+    print("\nThe Solution is: \n")
+    S.printStructure(ans)
+
+
