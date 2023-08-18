@@ -6,9 +6,20 @@ class Sudoku:
     def userInput(self):
         board = []
         for i in range(9):
-            row = list(map(int, input("Enter data for row, seperated by spaces and 0 indicates blank space: ").split()))
+            row = list(map(int, input("Enter data for row, 0 indicates blank space: ")))
             board.append(row)
 
+        return board
+
+    def fileInput(self):
+        file1 = open(r"sample.txt","r")
+        inp = file1.readlines()
+        file1.close()
+        sec1 = [list(map(int,(x[:-1]).replace(" ",""))) for x in inp[2:5]] 
+        sec2 = [list(map(int,(x[:-1]).replace(" ",""))) for x in inp[6:9]]
+        sec3 = [list(map(int,(x[:-1]).replace(" ",""))) for x in inp[10:12]]
+        sec4 = [list(map(int,inp[-1].replace(" ","")))]
+        board = sec1 + sec2 + sec3 + sec4
         return board
     
     # Prints board matrix-wise.
@@ -161,7 +172,10 @@ if __name__=="__main__":
     # [9, 0, 0, 5, 0, 8, 0, 0, 1],
     # [0, 6, 3, 0, 2, 0, 4, 5, 0]]
 
-    board = S.userInput()
+    # print(S.fileInput())
+    # board = S.userInput()
+    print("Kindly modify sample.txt according to teplate \nwithout making any chnges to spaces and lines.")
+    board = S.fileInput()
     print("\nThe board provided by you is: \n")
     S.printStructure(board)
     print("\nThe given board is: ",S.isValidSudoku(board))
