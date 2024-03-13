@@ -16,8 +16,8 @@ class Sudoku:
         inp = file1.readlines()
         file1.close()
         sec1 = [list(map(int,(x[:-1]).replace(" ",""))) for x in inp[2:5]] 
-        sec2 = [list(map(int,(x[:-1]).replace(" ",""))) for x in inp[6:9]]
-        sec3 = [list(map(int,(x[:-1]).replace(" ",""))) for x in inp[10:12]]
+        sec2 = [list(map(int,(x[:-1]).replace(" ",""))) for x in inp[5:9]]
+        sec3 = [list(map(int,(x[:-1]).replace(" ",""))) for x in inp[9:10]]
         sec4 = [list(map(int,inp[-1].replace(" ","")))]
         board = sec1 + sec2 + sec3 + sec4
         return board
@@ -175,6 +175,7 @@ if __name__=="__main__":
     # print(S.fileInput())
     # board = S.userInput()
     print("Kindly modify sample.txt according to teplate \nwithout making any chnges to spaces and lines.")
+    print(S.fileInput())
     board = S.fileInput()
     print("\nThe board provided by you is: \n")
     S.printStructure(board)
@@ -182,5 +183,3 @@ if __name__=="__main__":
     ans = S.fillBoard(board)
     print("\nThe Solution is: \n")
     S.printStructure(ans)
-
-
